@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+import { computed } from "vue";
+import { RouterView } from "vue-router";
+//import HelloWorld from "@/components/HelloWorld.vue";
+import { ElConfigProvider } from "element-plus";
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
+//import en from "element-plus/lib/locale/lang/en";
+const currentLocale = computed(function () {
+  console.log(this.$storage);
+  return zhCn;
+});
 </script>
 <template>
-  <header>
+  <el-config-provider :locale="currentLocale">
+    <RouterView />
+  </el-config-provider>
+  <!-- <header>
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
       <nav>
@@ -13,7 +24,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
     </div>
   </header>
 
-  <RouterView />
+  <RouterView /> -->
 </template>
 
 <style scoped></style>

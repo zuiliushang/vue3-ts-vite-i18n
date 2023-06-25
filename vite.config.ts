@@ -1,10 +1,9 @@
 import { resolve } from "path";
 import pkg from "./package.json";
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
 import { dayjs } from "element-plus";
 import { warpperEnv } from "./build";
+import { getPluginsList } from "./build/plugins";
 /**
  * node命令工作目录
  */
@@ -31,10 +30,11 @@ const __APP_INFO__ = {
 
 // https://vitejs.dev/config/
 //export default defineConfig({
-export default ({ mode }: ConfigEnv): UserConfigExport => {
-  const { VITE_PORT } = warpperEnv(loadEnv(mode, root));
+export default ({ mode, command }: ConfigEnv): UserConfigExport => {
+  const { VITE_PORT, VITE_CDN, VITE_COMPRESSION } = warpperEnv(
+    loadEnv(mode, root)
+  );
   return {
-    plugins: [vue(), vueJsx()],
     root,
     resolve: {
       alias
@@ -47,6 +47,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {}
     },
+    plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION), //[vue(), vueJsx()],
     define: {
       __INTLIFY_PROD_DEVTOOLS__: false,
       __APP_INFO__: JSON.stringify(__APP_INFO__)
