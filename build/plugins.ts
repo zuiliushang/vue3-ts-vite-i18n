@@ -5,6 +5,7 @@ import svgLoader from "vite-svg-loader";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { viteMockServe } from "vite-plugin-mock";
 import { configCompressPlugin } from "./compress";
+import { type PluginOption } from "vite";
 import { visualizer } from "rollup-plugin-visualizer";
 import removeConsole from "vite-plugin-remove-console";
 //import themePreprocessorPlugin from "@pureadmin/theme";
@@ -23,23 +24,20 @@ export function getPluginsList(
 ) {
   const prodMock = true;
   const lifecycle = process.env.npm_lifecycle_event;
-  VueI18nPlugin({
-    runtimeOnly: true,
-    compositionOnly: true,
-    include: [resolve("locales/**")]
-  }),
+  console.log(lifecycle);
+  return [
+    vue(),
+    // jsx、tsx语法支持
+    vueJsx(),
+    VueI18nPlugin({
+      runtimeOnly: true,
+      compositionOnly: true,
+      include: [resolve("locales/**")]
+    }),
     VITE_CDN ? cdn : null,
     configCompressPlugin(VITE_COMPRESSION),
     // 线上环境删除console
     removeConsole({ external: ["src/assets/iconfont/iconfont.js"] }),
-    //viteBuildInfo(),
-    // 自定义主题
-    // themePreprocessorPlugin({
-    //   scss: {
-    //     multipleScopeVars: genScssMultipleScopeVars(),
-    //     extract: true
-    //   }
-    // }),
     // svg组件化支持
     svgLoader(),
     // mock支持
@@ -53,14 +51,12 @@ export function getPluginsList(
         `,
       logger: false
     }),
-    // 打包分析
     lifecycle === "report"
-      ? visualizer({ open: true, brotliSize: true, filename: "report.html" })
-      : null;
-  return [
-    vue(),
-
-    // jsx、tsx语法支持
-    vueJsx()
+      ? (visualizer({
+          open: true,
+          brotliSize: true,
+          filename: "report.html"
+        }) as unknown as PluginOption)
+      : null
   ];
 }

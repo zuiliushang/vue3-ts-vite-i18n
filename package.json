@@ -53,5 +53,19 @@
     "vite-svg-loader": "^4.0.0",
     "vite-plugin-remove-console": "^2.1.1",
     "@intlify/unplugin-vue-i18n": "^0.10.0"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "rollup",
+        "webpack",
+        "core-js"
+      ]
+    },
+    "allowedDeprecatedVersions": {
+      "sourcemap-codec": "*",
+      "w3c-hr-time": "*",
+      "stable": "*"
+    }
   }
 }

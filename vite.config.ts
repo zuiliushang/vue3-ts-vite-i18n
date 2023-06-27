@@ -47,7 +47,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {}
     },
-    plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION), //[vue(), vueJsx()],
+    plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION),
     define: {
       __INTLIFY_PROD_DEVTOOLS__: false,
       __APP_INFO__: JSON.stringify(__APP_INFO__)

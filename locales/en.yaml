@@ -1,4 +1,5 @@
 menus:
-  hhhome: "Home"
-  hhabout: "About"
-  hhtitle: Expand All
+  home: Home
+  about: About
+  login: Login
+  register: Register
