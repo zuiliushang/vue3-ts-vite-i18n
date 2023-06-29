@@ -11,6 +11,7 @@ const currentLocale = computed(function () {
 });
 </script>
 <template>
+  123123
   <el-config-provider :locale="currentLocale">
     <RouterView />
   </el-config-provider>
