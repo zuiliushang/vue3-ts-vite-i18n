@@ -3,3 +3,5 @@ menus:
   about: About
   login: Login
   register: Register
+page:
+  title: The Best Website!

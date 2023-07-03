@@ -1,13 +1,13 @@
 import "./assets/main.css";
 
 import { createApp } from "vue";
-import { createPinia } from "pinia";
 //import Storage from "responsive-storage";
 //import { useI18n } from "@/plugins/i18n";
 import App from "./App.vue";
 import router from "./router";
 import ElementPlus from "element-plus";
 import { useI18n } from "@/plugins/i18n";
+import { setupStore } from "./stores";
 
 // 引入重置样式
 
@@ -23,13 +23,9 @@ const app = createApp(App);
 // 自定义指令
 
 // 全局注册按钮按钮权限组件
-app.use(createPinia());
-
+setupStore(app);
 // 注册路由
 app.use(router);
-
-// 注册缓存配置
-
 // 注册elementplus
 app.use(ElementPlus);
 // 使用I18N

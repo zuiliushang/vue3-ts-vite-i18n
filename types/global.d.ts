@@ -7,7 +7,7 @@ import type {
 import type { ECharts } from "echarts";
 import type { IconifyIcon } from "@iconify/vue";
 import type { TableColumns } from "@pureadmin/table";
-
+import { type RouteComponent, type RouteLocationNormalized } from "vue-router";
 /**
  * 全局类型声明，无需引入直接在 `.vue` 、`.ts` 、`.tsx` 文件使用即可获得类型提示
  */
@@ -24,6 +24,17 @@ declare global {
     };
     lastBuildTime: string;
   };
+
+  /**
+   * `src/router` 文件夹里的类型声明
+   */
+  interface toRouteType extends RouteLocationNormalized {
+    meta: {
+      roles: Array<string>;
+      keepAlive?: boolean;
+      dynamicLevel?: string;
+    };
+  }
 
   /**
    * 打包压缩格式的类型声明
@@ -58,10 +69,11 @@ declare global {
   }
 
   /**
-   * 与 `ServerConfigs` 类型不同，这里是缓存到浏览器本地存储的类型声明
+   * 缓存到浏览器本地存储的类型声明
    */
   interface StorageConfigs {
-    locale?: string;
+    locale?: string; // 国际化标识
+    multiTagsCache?: boolean; //存储标签页信息（路由信息）
   }
 
   /**

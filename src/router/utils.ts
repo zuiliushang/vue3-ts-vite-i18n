@@ -16,18 +16,15 @@ import {
   storageSession,
   isIncludeAllChildren
 } from "@pureadmin/utils";
-import { getConfig } from "@/config";
 import { menuType } from "@/layout/types";
 import { buildHierarchyTree } from "@/utils/tree";
-import { sessionKey, type DataInfo } from "@/utils/auth";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/store/modules/permission";
+import { sessionKey, type AuthInfo } from "@/utils/auth";
+import { useMultiTagsStoreHook } from "@/stores/modules/multiTags";
+import { usePermissionStoreHook } from "@/stores/modules/permission";
+import { CachingAsyncRoutes } from "@/utils/config";
 const IFrame = () => import("@/layout/frameView.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
-
-// 动态路由
-import { getAsyncRoutes } from "@/api/routes";
 
 function handRank(routeInfo: any) {
   const { name, path, parentId, meta } = routeInfo;
@@ -84,7 +81,7 @@ function isOneOfArray(a: Array<string>, b: Array<string>) {
 /** 从sessionStorage里取出当前登陆用户的角色roles，过滤无权限的菜单 */
 function filterNoPermissionTree(data: RouteComponent[]) {
   const currentRoles =
-    storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [];
+    storageSession().getItem<AuthInfo<number>>(sessionKey)?.roles ?? [];
   const newTree = cloneDeep(data).filter((v: any) =>
     isOneOfArray(v.meta?.roles, currentRoles)
   );
@@ -183,7 +180,7 @@ function handleAsyncRoutes(routeList) {
 
 /** 初始化路由（`new Promise` 写法防止在异步请求中造成无限循环）*/
 function initRouter() {
-  if (getConfig()?.CachingAsyncRoutes) {
+  if (CachingAsyncRoutes) {
     // 开启动态路由缓存本地sessionStorage
     const key = "async-routes";
     const asyncRouteList = storageSession().getItem(key) as any;
@@ -193,21 +190,24 @@ function initRouter() {
         resolve(router);
       });
     } else {
-      return new Promise(resolve => {
-        getAsyncRoutes().then(({ data }) => {
-          handleAsyncRoutes(cloneDeep(data));
-          storageSession().setItem(key, data);
-          resolve(router);
-        });
-      });
+      // 后端动态路由逻辑
+      // return new Promise(resolve => {
+      //   getAsyncRoutes().then(({ data }) => {
+      //     handleAsyncRoutes(cloneDeep(data));
+      //     storageSession().setItem(key, data);
+      //     resolve(router);
+      //   });
+      // });
+      handleAsyncRoutes(cloneDeep([]));
     }
   } else {
-    return new Promise(resolve => {
-      getAsyncRoutes().then(({ data }) => {
-        handleAsyncRoutes(cloneDeep(data));
-        resolve(router);
-      });
-    });
+    // return new Promise(resolve => {
+    //   getAsyncRoutes().then(({ data }) => {
+    //     handleAsyncRoutes(cloneDeep(data));
+    //     resolve(router);
+    //   });
+    // });
+    handleAsyncRoutes(cloneDeep([]));
   }
 }
 

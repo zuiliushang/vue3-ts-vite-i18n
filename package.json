@@ -23,7 +23,8 @@
     "responsive-storage": "^2.2.0",
     "vue-types": "^5.0.3",
     "vue-i18n": "^9.2.2",
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "nprogress": "^0.2.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
